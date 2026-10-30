@@ -7,11 +7,14 @@ import dev.gabryel.testingcontroller.exception.InvalidNameException;
 import dev.gabryel.testingcontroller.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
-    private List<UserEntity> users = List.of();
+    private Map<Integer, UserEntity> users = new HashMap<>();
 
     public UserEntity createUser(CreateUserRequest request) {
         if (request.name() == null || request.name().isBlank())
@@ -24,7 +27,7 @@ public class UserService {
                 request.name(),
                 request.email()
         );
-        users.add(userEntity);
+        users.put(userEntity.getId(), userEntity);
         return userEntity;
     }
 
@@ -43,9 +46,9 @@ public class UserService {
     public String deleteUserById(Integer id) {
         if (id == null)
             throw new IllegalArgumentException("Please, enter a valid ID");
-        if (users.remove(id))
+        if (users.remove(id) != null) {
             return "User successful deleted";
-        else
+        } else
             throw new UserNotFoundException();
     }
 }
