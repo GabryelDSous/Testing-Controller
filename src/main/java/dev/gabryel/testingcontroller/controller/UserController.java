@@ -3,6 +3,7 @@ package dev.gabryel.testingcontroller.controller;
 import dev.gabryel.testingcontroller.dto.CreateUserRequest;
 import dev.gabryel.testingcontroller.entity.UserEntity;
 import dev.gabryel.testingcontroller.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserEntity> createUser(@RequestBody @Valid CreateUserRequest request) {
         UserEntity response = service.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
